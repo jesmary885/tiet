@@ -16,4 +16,8 @@ class Operacion extends Model
         return $this->belongsTo(Orden_produccion::class);
     }
 
+    public function almacen(){
+        return $this->belongsTo(Almacen::class);
+    }
+
 }

@@ -313,33 +313,33 @@
             <tbody>
                 <tr>
                     <td><p id="fase">1 - TROQUELAR E IDENTIFICACIÓN DEL TUBO<br>DOC. DE REFERENCIA: ITR-RAN-02</p> </td>
-                    <td><p id="fec"></p> </td>
+                    <td><p id="fec"></p>{{$fecha1}} </td>
                     <td><p id="fec"></p> </td>
                     <td> </td>
                 </tr>
                 <tr>
                     <td><p id="fase"> 2 - RANURA SEGÚN ORDEN<br>DOC. DE REFERENCIA: ITR-RAN-03</p> </td>
-                    <td><p id="fec"></p> </td>
+                    <td><p id="fec"></p>{{$fecha2}} </td>
                     <td><p id="fec"></p> </td>
                     <td> </td>
                 </tr>
                 <tr>
                     <td><p id="fase">3 - LIMPIAR Y ELIMINAR REBARBAS<br>DOC. DE REFERENCIA: ITR-RAN-05</p> </td>
-                    <td><p id="fec"></p> </td>
+                    <td><p id="fec"></p>{{$fecha3}} </td>
                     <td><p id="fec"></p> </td>
                     <td> </td>
                 </tr>
 
                 <tr>
                     <td><p id="fase">4 - PROTEGER TUBERIA EN ZONA RANURADA<br>DOC. DE REFERENCIA: ITR-RAN-05</p> </td>
-                    <td><p id="fec"></p> </td>
+                    <td><p id="fec"></p>{{$fecha4}} </td>
                     <td><p id="fec"></p> </td>
                     <td> </td>
                 </tr>
 
                 <tr>
                     <td><p id="fase">5 - ALMACENADO EN RACK N°<br>DOC.REFERENCIA:PRO-LOG-17/ITR-RAN-05</p> </td>
-                    <td><p id="fec"></p> </td>
+                    <td><p id="fec"></p>{{$fecha5}} </td>
                     <td><p id="fec"></p> </td>
                     <td> </td>
                 </tr>

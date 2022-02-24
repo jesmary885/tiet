@@ -230,6 +230,7 @@ return [
         [
             'text'    => 'ADMINISTRACION',
             'icon'    => 'fas fa-toolbox fa-fw',
+            'can'  => 'admin.general',
             'submenu' => [
                 [
                     'text' => 'Usuarios',
@@ -261,6 +262,12 @@ return [
                     'can'  => 'ronurados.index'
                
                 ],
+                [
+                    'text' => 'Almacenen',
+                    'route'     => 'almacenes.index',
+                    'can'  => 'almacenes.index'
+               
+                ],
             ],
         ],
 
@@ -287,8 +294,14 @@ return [
                 [
                     'text' => 'Tipo de ranurado',
                     'route'     => 'reporte.index',
-                    
-                 
+                ],
+                [
+                    'text' => 'Usuarios',
+                    'route'     => 'reporte.usuarios.index',
+                ],
+                [
+                    'text' => 'Ordenes',
+                    'route'     => 'reporte.ordenes.index',
                 ],
             ],
             

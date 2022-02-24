@@ -14,7 +14,7 @@ class OrdenProduccion extends Component
     use WithPagination;
     protected $paginationTheme = "bootstrap";
 
-    protected $listeners = ['render' => 'render','confirmacion' => 'confirmacion'];
+    protected $listeners = ['render' => 'render','confirmacion' => 'confirmacion','updatingSearch' => 'updatingSearch'];
 
     public $search,$cliente,$orden;
 
@@ -42,7 +42,7 @@ class OrdenProduccion extends Component
     public function confirmacion(){
         $orden_destroy = Orden_produccion::where('id',$this->orden)->first();
         $orden_destroy->update([
-            'estado' => 'inactiva',
+            'estado' => 'anulada',
         ]);
 
     }
@@ -53,6 +53,16 @@ class OrdenProduccion extends Component
 
         $orden_select = Orden_produccion::where('id',$this->orden)->first();
         $operacion = Operacion::where('orden_produccion_id',$this->orden)->first();
+        if($operacion->fase1 != 'no') $fe1 = $operacion->fecha_i_fase1;
+        else $fe1 =' ';
+        if($operacion->fase2 != 'no') $fe2 = $operacion->fecha_i_fase2;
+        else $fe2 =' ';
+        if($operacion->fase3 != 'no') $fe3 = $operacion->fecha_i_fase3;
+        else $fe3 =' ';
+        if($operacion->fase4 != 'no') $fe4 = $operacion->fecha_i_fase4;
+        else $fe4 =' ';
+        if($operacion->fase5 != 'no') $fe5 = $operacion->fecha_i_fase5;
+        else $fe5 =' ';
 
         $data = [
             'fecha' => $orden_select->fecha,
@@ -73,16 +83,12 @@ class OrdenProduccion extends Component
             'suplidor' => $orden_select->suplidor->nombre,
             'cliente'=> $orden_select->cliente->nombre.' '.$orden_select->cliente->apellido,
             'usuario' => $orden_select->user->name.' '.$orden_select->user->apellido,
-            // 'fecha1' => date("d-m-Y",strtotime($operacion->fecha_i_toquelar_ident)),
-            // 'fecha2' =>  date("d-m-Y",strtotime($operacion->fecha_f_toquelar_ident)),
-            // 'fecha3' =>  date("d-m-Y",strtotime($operacion->fecha_i_limpiar_reb)),
-            // 'fecha4' =>  date("d-m-Y",strtotime($operacion->fecha_f_limpiar_reb)),
-            // 'fecha5' =>  date("d-m-Y",strtotime($operacion->fecha_i_prot_tub)),
-            // 'fecha6' =>  date("d-m-Y",strtotime($operacion->fecha_f_prot_tub)),
-            // 'fecha7' =>  date("d-m-Y",strtotime($operacion->fecha_i_alm)),
-            // 'fecha8' =>  date("d-m-Y",strtotime($operacion->fecha_f_alm)),
-            // 'fecha9' =>  date("d-m-Y",strtotime($operacion->fecha_i_ranura)),
-            // 'fecha10' =>  date("d-m-Y",strtotime($operacion->fecha_f_ranura)),
+            'fecha1' => $fe1,
+             'fecha2' => $fe2,
+             'fecha3' => $fe3,
+             'fecha4' => $fe4,
+             'fecha5' => $fe5,
+    
         ];
 
         $pdf = PDF::loadView('PlanillaOrdenProduccion',$data)->output();

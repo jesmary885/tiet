@@ -20,6 +20,6 @@ class ReporteIndex extends Component
         $fecha_inicio = Carbon::parse($this->fecha_inicio);
         $fecha_fin = Carbon::parse($this->fecha_fin);
 
-    return redirect()->route('ronurados.reportes',compact('fecha_inicio','fecha_fin'));
+        return redirect()->route('reporte.ordenes.generar',compact('fecha_inicio','fecha_fin'));
     }
 }

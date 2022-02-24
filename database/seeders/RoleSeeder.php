@@ -43,6 +43,15 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'cambiar_contrasena',
         'description' => 'Cambiar contraseña'])->syncRoles([$role1,$role2]);
 
+        Permission::create(['name' => 'almacenes.index',
+        'description' => 'Administrar almacen'])->syncRoles([$role1]);
+
+        Permission::create(['name' => 'registro.fases',
+        'description' => 'Registro de fases'])->syncRoles([$role2]);
+
+        Permission::create(['name' => 'admin.general',
+        'description' => 'Administración general del sistema'])->syncRoles([$role1]);
+
        
     }
 }

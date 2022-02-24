@@ -26,6 +26,9 @@ class CreateOperacionsTable extends Migration
             $table->string('fase3');
             $table->string('fase4');
             $table->string('fase5');
+            $table->unsignedBigInteger('almacen_id');
+            $table->foreign('almacen_id')->references('id')->on('almacens');
+            
             $table->unsignedBigInteger('orden_produccion_id');
             $table->foreign('orden_produccion_id')->references('id')->on('orden_produccions')->onDelete('CASCADE');;
         });

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AlmacenesController;
 use App\Http\Controllers\Admin\ClientesController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RonuradosController;
@@ -8,7 +9,9 @@ use App\Http\Controllers\Admin\UsuariosController;
 use App\Http\Controllers\CambiarContrasenaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrdenProduccionController;
+use App\Http\Controllers\Reportes\ReporteOrdenesController;
 use App\Http\Controllers\Reportes\ReportesController;
+use App\Http\Controllers\Reportes\ReporteUsuarioController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,6 +45,7 @@ Route::resource('roles', RoleController::class)->only('index','edit','update','d
 Route::get('clientes',[ClientesController::class,'index'])->name('clientes.index');
 Route::get('suplidores',[SuplidoresController::class,'index'])->name('suplidores.index');
 Route::get('tipos_ronurados',[RonuradosController::class,'index'])->name('ronurados.index');
+Route::get('almacenes',[AlmacenesController::class,'index'])->name('almacenes.index');
 
 //Orden de produccion
 
@@ -52,6 +56,12 @@ Route::get('orden_produccion_registro',[OrdenProduccionController::class,'create
 
 Route::get('reportes',[ReportesController::class,'index'])->name('reporte.index');
 Route::get('reportes_ronurados/{fecha_inicio}/{fecha_fin}',[ReportesController::class,'ronurados'])->name('ronurados.reportes');
+
+Route::get('reportes_usuarios',[ReporteUsuarioController::class,'index'])->name('reporte.usuarios.index');
+Route::get('reportes_usuarios/{usuario}',[ReporteUsuarioController::class,'generar'])->name('reporte.usuarios.generar');
+
+Route::get('reportes_ordenes',[ReporteOrdenesController::class,'index'])->name('reporte.ordenes.index');
+Route::get('reportes_ordenes/{fecha_inicio}/{fecha_fin}',[ReporteOrdenesController::class,'generar'])->name('reporte.ordenes.generar');
 
 //Ajustes
 

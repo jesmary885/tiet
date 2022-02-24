@@ -100,11 +100,12 @@ class OrdenProduccionCreate extends Component
          $operacion->fecha_i_fase3 = $this->fecha_actual;
          $operacion->fecha_i_fase4 = $this->fecha_actual;
          $operacion->fecha_i_fase5 = $this->fecha_actual;
-         $operacion->fase1 = 0;
-         $operacion->fase2 = 0;
-         $operacion->fase3 = 0;
-         $operacion->fase4 = 0;
-         $operacion->fase5 = 0;
+         $operacion->fase1 = 'no';
+         $operacion->fase2 = 'no';
+         $operacion->fase3 =  'no';
+         $operacion->fase4 = 'no';
+         $operacion->fase5 = 'no';
+         $operacion->almacen_id = '1';
          $operacion->orden_produccion_id = $orden->id;
          $operacion->save();
 
@@ -128,16 +129,12 @@ class OrdenProduccionCreate extends Component
             'suplidor' => $orden->suplidor->nombre,
             'cliente'=> $orden->cliente->nombre.' '.$orden->cliente->apellido,
             'usuario' => $user_auth->name.' '.$user_auth->apellido,
-            // 'fecha1' => date("d-m-Y",strtotime($this->fecha_i_toquelar_ident)),
-            // 'fecha2' =>  date("d-m-Y",strtotime($this->fecha_f_toquelar_ident)),
-            // 'fecha3' =>  date("d-m-Y",strtotime($this->fecha_i_limpiar_reb)),
-            // 'fecha4' =>  date("d-m-Y",strtotime($this->fecha_f_limpiar_reb)),
-            // 'fecha5' =>  date("d-m-Y",strtotime($this->fecha_i_prot_tub)),
-            // 'fecha6' =>  date("d-m-Y",strtotime($this->fecha_f_prot_tub)),
-            // 'fecha7' =>  date("d-m-Y",strtotime($this->fecha_i_alm)),
-            // 'fecha8' =>  date("d-m-Y",strtotime($this->fecha_f_alm)),
-            // 'fecha9' =>  date("d-m-Y",strtotime($this->fecha_i_ranura)),
-            // 'fecha10' =>  date("d-m-Y",strtotime($this->fecha_f_ranura)),
+             'fecha1' => ' ',
+             'fecha2' =>  ' ',
+            'fecha3' =>  ' ',
+             'fecha4' => ' ',
+             'fecha5' => ' ',
+           
         ];
 
         //Envio del arreglo al archivo pdf para llenar la planilla con los datos requeridos

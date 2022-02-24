@@ -10,9 +10,10 @@
                     <thead>
                         <tr>
                             <th>Fecha</th>
+                            <th>Nro de orden</th>
                             <th>Cantidad</th>   
                             <th>Diametro</th>
-                            <th>Rosca</th>
+                 
                             <th>Tipo de ronurado</th>
                             <th>Suplidor</th>
                             <th colspan="4"></th> 
@@ -23,6 +24,8 @@
                         @foreach ($ordenes as $orden)
                             <tr>
                                 <td>{{$orden->fecha}}</td>
+                                <td>{{$orden->id}}</td>
+
                                 <td>{{$orden->cantidad}}</td>
                                  <?php  
                                 //if ($orden->estado == 'activa') $colord = 'green';   
@@ -30,15 +33,16 @@
                                 ?>
                                 {{-- <td class="font-bold" style="color:{{$colord}}">{{$orden->estado}}</td>  --}}
                                 <td>{{$orden->diametro}}</td>
-                                <td>{{$orden->rosca}}</td>
+                      
                                 <td>{{$orden->tipo_ranurado->nombre}}</td>
                                 <td>{{$orden->suplidor->nombre}}</td>
+                                @can('registro.fases')
                                 <td width="10px">
-                                    @livewire('ordenes.orden-add', ['orden' => $orden],key($orden->id+1))
+                                    @livewire('ordenes.orden-add', ['orden' => $orden],key($orden->id))
                                     </td>
-
+                                 @endcan
                                 <td width="10px">
-                                    @livewire('ordenes.orden-edit', ['orden' => $orden],key($orden->id))
+                                    @livewire('ordenes.orden-edit', ['orden' => $orden],key(($orden->id)*1000))
                                </td>
                                
                                
