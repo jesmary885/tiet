@@ -14,10 +14,12 @@ use PDF;
 class OrdenProduccionCreate extends Component
 {
 
+    //Declaración de variables
     public $cantidad,$tipo_ranurado_id,$diametro,$rosca,$lbs,$grados,$ext_libre,$ranura,$aa,$densidad_rpp,$long,$observaciones,$suplidor_id;
     public $fecha_i_toquelar_ident,$fecha_f_toquelar_ident,$fecha_i_limpiar_reb,$fecha_f_limpiar_reb,$fecha_i_prot_tub,$fecha_f_prot_tub,$fecha_i_alm,$fecha_f_alm,$fecha_i_ranura,$fecha_f_ranura;
     public $clientes, $suplidores, $ranurados, $fecha_actual, $maq, $cliente_id;
 
+    //Reglas de validación
      protected $rules = [
          'cantidad' => 'required|numeric',
          'tipo_ranurado_id' => 'required',
@@ -34,31 +36,32 @@ class OrdenProduccionCreate extends Component
          'observaciones' => 'required',
          'suplidor_id' => 'required',
          'cliente_id' => 'required',
-         'fecha_i_toquelar_ident' => 'required',
-         'fecha_f_toquelar_ident' => 'required',
-         'fecha_i_limpiar_reb' => 'required',
-         'fecha_f_limpiar_reb' => 'required',
-         'fecha_i_prot_tub' => 'required',
-         'fecha_f_prot_tub' => 'required',
-         'fecha_i_alm' => 'required',
-         'fecha_f_alm' => 'required',
-         'fecha_i_ranura' => 'required',
-         'fecha_f_ranura' => 'required',
+        //  'fecha_i_toquelar_ident' => 'required',
+        //  'fecha_f_toquelar_ident' => 'required',
+        //  'fecha_i_limpiar_reb' => 'required',
+        //  'fecha_f_limpiar_reb' => 'required',
+        //  'fecha_i_prot_tub' => 'required',
+        //  'fecha_f_prot_tub' => 'required',
+        //  'fecha_i_alm' => 'required',
+        //  'fecha_f_alm' => 'required',
+        //  'fecha_i_ranura' => 'required',
+        //  'fecha_f_ranura' => 'required',
       ];
 
-      public function mount(){
+    //Funcion que se ejecuta solo una vez (al iniciar el componente)
+    public function mount(){
         $this->ranurados=Tipo_ranurado::all();
         $this->clientes=Cliente::all();
         $this->suplidores=Suplidor::all();
     }
 
-
-
+    //Función que renderiza la vista del componente
     public function render()
     {
         return view('livewire.orden-produccion-create');
     }
 
+    //Función donde se realiza el registro en bdd y se genera el archivo Pdf
     public function save()
     {
         $rules = $this->rules;
@@ -68,7 +71,7 @@ class OrdenProduccionCreate extends Component
     
         $user_auth =  auth()->user();
 
-        //agregando orden
+        //Registrando en tabla Orden de producción
         $orden = new Orden_produccion();
         $orden->fecha = $this->fecha_actual;
         $orden->cantidad = $this->cantidad;
@@ -87,23 +90,25 @@ class OrdenProduccionCreate extends Component
         $orden->suplidor_id = $this->suplidor_id;
         $orden->cliente_id = $this->cliente_id;
         $orden->user_id = $user_auth->id;
+        $orden->estado = 'activa';
         $orden->save();
 
+        //Registrando fechas en la tabla relacional Operación
+         $operacion = new Operacion();
+         $operacion->fecha_i_fase1 = $this->fecha_actual;
+         $operacion->fecha_i_fase2 = $this->fecha_actual;
+         $operacion->fecha_i_fase3 = $this->fecha_actual;
+         $operacion->fecha_i_fase4 = $this->fecha_actual;
+         $operacion->fecha_i_fase5 = $this->fecha_actual;
+         $operacion->fase1 = 0;
+         $operacion->fase2 = 0;
+         $operacion->fase3 = 0;
+         $operacion->fase4 = 0;
+         $operacion->fase5 = 0;
+         $operacion->orden_produccion_id = $orden->id;
+         $operacion->save();
 
-        $operacion = new Operacion();
-        $operacion->fecha_i_toquelar_ident = date("Y-m-d",strtotime($this->fecha_i_toquelar_ident));
-        $operacion->fecha_f_toquelar_ident = date("Y-m-d",strtotime($this->fecha_f_toquelar_ident));
-        $operacion->fecha_i_limpiar_reb = date("Y-m-d",strtotime($this->fecha_i_limpiar_reb));
-        $operacion->fecha_f_limpiar_reb = date("Y-m-d",strtotime($this->fecha_f_limpiar_reb));
-        $operacion->fecha_i_prot_tub = date("Y-m-d",strtotime($this->fecha_i_prot_tub));
-        $operacion->fecha_f_prot_tub = date("Y-m-d",strtotime($this->fecha_f_prot_tub));
-        $operacion->fecha_i_alm = date("Y-m-d",strtotime($this->fecha_i_alm));
-        $operacion->fecha_f_alm = date("Y-m-d",strtotime($this->fecha_f_alm));
-        $operacion->fecha_i_ranura = date("Y-m-d",strtotime($this->fecha_i_ranura));
-        $operacion->fecha_f_ranura = date("Y-m-d",strtotime($this->fecha_f_ranura));
-        $operacion->orden_produccion_id = $orden->id;
-        $operacion->save();
-
+        //Variable tipo arreglo, con la data que completara los campos de la planilla "orden de producción" en formato PDF.
         $data = [
             'fecha' => $this->fecha_actual,
             'id' => $orden->id,
@@ -123,59 +128,57 @@ class OrdenProduccionCreate extends Component
             'suplidor' => $orden->suplidor->nombre,
             'cliente'=> $orden->cliente->nombre.' '.$orden->cliente->apellido,
             'usuario' => $user_auth->name.' '.$user_auth->apellido,
-            'fecha1' => date("d-m-Y",strtotime($this->fecha_i_toquelar_ident)),
-            'fecha2' =>  date("d-m-Y",strtotime($this->fecha_f_toquelar_ident)),
-            'fecha3' =>  date("d-m-Y",strtotime($this->fecha_i_limpiar_reb)),
-            'fecha4' =>  date("d-m-Y",strtotime($this->fecha_f_limpiar_reb)),
-            'fecha5' =>  date("d-m-Y",strtotime($this->fecha_i_prot_tub)),
-            'fecha6' =>  date("d-m-Y",strtotime($this->fecha_f_prot_tub)),
-            'fecha7' =>  date("d-m-Y",strtotime($this->fecha_i_alm)),
-            'fecha8' =>  date("d-m-Y",strtotime($this->fecha_f_alm)),
-            'fecha9' =>  date("d-m-Y",strtotime($this->fecha_i_ranura)),
-            'fecha10' =>  date("d-m-Y",strtotime($this->fecha_f_ranura)),
+            // 'fecha1' => date("d-m-Y",strtotime($this->fecha_i_toquelar_ident)),
+            // 'fecha2' =>  date("d-m-Y",strtotime($this->fecha_f_toquelar_ident)),
+            // 'fecha3' =>  date("d-m-Y",strtotime($this->fecha_i_limpiar_reb)),
+            // 'fecha4' =>  date("d-m-Y",strtotime($this->fecha_f_limpiar_reb)),
+            // 'fecha5' =>  date("d-m-Y",strtotime($this->fecha_i_prot_tub)),
+            // 'fecha6' =>  date("d-m-Y",strtotime($this->fecha_f_prot_tub)),
+            // 'fecha7' =>  date("d-m-Y",strtotime($this->fecha_i_alm)),
+            // 'fecha8' =>  date("d-m-Y",strtotime($this->fecha_f_alm)),
+            // 'fecha9' =>  date("d-m-Y",strtotime($this->fecha_i_ranura)),
+            // 'fecha10' =>  date("d-m-Y",strtotime($this->fecha_f_ranura)),
         ];
 
+        //Envio del arreglo al archivo pdf para llenar la planilla con los datos requeridos
         $pdf = PDF::loadView('PlanillaOrdenProduccion',$data)->output();
 
-      
+        //Resetear inputs del formulario
+        $this->reset(['cantidad',
+        'tipo_ranurado_id',
+        'diametro',
+        'rosca',
+        'lbs',
+        'grados',
+        'ext_libre',
+        'ranura',
+        'aa',
+        'densidad_rpp',
+        'long',
+        'observaciones',
+        'suplidor_id',
+        'cliente_id',
+        // 'fecha_i_toquelar_ident',
+        // 'fecha_f_toquelar_ident',
+        // 'fecha_i_limpiar_reb',
+        // 'fecha_f_limpiar_reb',
+        // 'fecha_i_prot_tub',
+        // 'fecha_f_prot_tub',
+        // 'fecha_i_alm',
+        // 'fecha_f_alm',
+        // 'fecha_i_ranura',
+        // 'fecha_f_ranura',
+        'maq']);
 
+        //Emitiendo evento informativo sobre la finalización del proceso solicitado.
+        $this->emit('alert','Orden creada correctamente');
 
-    $this->reset(['cantidad',
-    'tipo_ranurado_id',
-    'diametro',
-    'rosca',
-    'lbs',
-    'grados',
-    'ext_libre',
-    'ranura',
-    'aa',
-    'densidad_rpp',
-    'long',
-    'observaciones',
-    'suplidor_id',
-    'cliente_id',
-    'fecha_i_toquelar_ident',
-    'fecha_f_toquelar_ident',
-    'fecha_i_limpiar_reb',
-    'fecha_f_limpiar_reb',
-    'fecha_i_prot_tub',
-    'fecha_f_prot_tub',
-    'fecha_i_alm',
-    'fecha_f_alm',
-    'fecha_i_ranura',
-    'fecha_f_ranura',
-    'maq']);
-
-    $this->emit('alert','Orden creada correctamente');
-
-    return response()->streamDownload(
-        fn () => print($pdf),
-       "OrdenProduccion.pdf"
-        );
+        //Generando documento Pdf
+        return response()->streamDownload(
+            fn () => print($pdf),
+        "OrdenProduccion.pdf"
+            );
     
     }
-
-    
-
 
 }

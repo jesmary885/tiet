@@ -48,8 +48,8 @@ return [
     
 
     'logo' => null,
-    'logo_img' => 'vendor/adminlte/dist/img/tiet.jpg',
-    'logo_img_class' => 'w-50 m-auto opacity-20',
+    'logo_img' => 'vendor/adminlte/dist/img/tiet2.jpg',
+    'logo_img_class' => 'w-50 m-auto img-circle opacity-20',
     'logo_img_xl' => null,
     'logo_img_xl_class' => null,
     'logo_img_alt' => null,
@@ -129,7 +129,7 @@ return [
     'classes_content_wrapper' => '',
     'classes_content_header' => '',
     'classes_content' => '',
-    'classes_sidebar' => 'sidebar-light-primary elevation-4',
+    'classes_sidebar' => 'sidebar-dark-primary elevation-4',
     'classes_sidebar_nav' => '',
     'classes_topnav' => 'navbar-white navbar-light',
     'classes_topnav_nav' => 'navbar-expand',
@@ -234,6 +234,7 @@ return [
                 [
                     'text' => 'Usuarios',
                     'route'  => 'usuarios.index',
+                    'can'  => 'usuarios.index'
 
                 ],
                 [
@@ -266,7 +267,7 @@ return [
         [
             
             'text'    => 'ORDEN DE PRODUCCIÓN',
-            'icon'    => '	fas fa-calendar-week',
+            'icon'    => '  fas fa-calendar-week',
             'can'  => 'orden_produccion.index',
             'submenu' => [
                 [
@@ -277,7 +278,6 @@ return [
                 ],
             ],
         ],
-
 
         [
             'text'    => 'REPORTES',
@@ -309,6 +309,8 @@ return [
             ],
         ],
     ],
+
+
 
     /*
     |--------------------------------------------------------------------------

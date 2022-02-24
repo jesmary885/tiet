@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Crypt;
 
 class UserSeeder extends Seeder
 {
@@ -23,6 +24,7 @@ class UserSeeder extends Seeder
             'estado_id' => '1',
             'ciudad_id' => '1',
             'password'=>bcrypt('12345678'),
+            'password_cifrada' => Crypt::encryptString('12345678'),
 
         ])->assignRole('Analista');
 
@@ -35,6 +37,7 @@ class UserSeeder extends Seeder
             'estado_id' => '1',
             'ciudad_id' => '1',
             'password'=>bcrypt('12345678'),
+            'password_cifrada' => Crypt::encryptString('12345678'),
 
         ])->assignRole('Admin');
     }

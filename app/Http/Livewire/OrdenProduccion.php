@@ -26,6 +26,7 @@ class OrdenProduccion extends Component
     {
 
         $ordenes = Orden_produccion::where('fecha', 'LIKE', '%' . $this->search . '%')
+        ->where('estado', 'activa')
         ->latest('id')
         ->paginate(5);
 
@@ -35,12 +36,14 @@ class OrdenProduccion extends Component
     public function delete($ordenId){
         $this->orden = $ordenId;
 
-        $this->emit('confirm', 'Esta seguro de eliminar esta orden?','orden-produccion','confirmacion','La orden se ha eliminado.');
+        $this->emit('confirm', 'Esta seguro de anular esta orden?','orden-produccion','confirmacion','La orden se ha anulado.');
     }
 
     public function confirmacion(){
         $orden_destroy = Orden_produccion::where('id',$this->orden)->first();
-        $orden_destroy->delete();
+        $orden_destroy->update([
+            'estado' => 'inactiva',
+        ]);
 
     }
 
@@ -70,16 +73,16 @@ class OrdenProduccion extends Component
             'suplidor' => $orden_select->suplidor->nombre,
             'cliente'=> $orden_select->cliente->nombre.' '.$orden_select->cliente->apellido,
             'usuario' => $orden_select->user->name.' '.$orden_select->user->apellido,
-            'fecha1' => date("d-m-Y",strtotime($operacion->fecha_i_toquelar_ident)),
-            'fecha2' =>  date("d-m-Y",strtotime($operacion->fecha_f_toquelar_ident)),
-            'fecha3' =>  date("d-m-Y",strtotime($operacion->fecha_i_limpiar_reb)),
-            'fecha4' =>  date("d-m-Y",strtotime($operacion->fecha_f_limpiar_reb)),
-            'fecha5' =>  date("d-m-Y",strtotime($operacion->fecha_i_prot_tub)),
-            'fecha6' =>  date("d-m-Y",strtotime($operacion->fecha_f_prot_tub)),
-            'fecha7' =>  date("d-m-Y",strtotime($operacion->fecha_i_alm)),
-            'fecha8' =>  date("d-m-Y",strtotime($operacion->fecha_f_alm)),
-            'fecha9' =>  date("d-m-Y",strtotime($operacion->fecha_i_ranura)),
-            'fecha10' =>  date("d-m-Y",strtotime($operacion->fecha_f_ranura)),
+            // 'fecha1' => date("d-m-Y",strtotime($operacion->fecha_i_toquelar_ident)),
+            // 'fecha2' =>  date("d-m-Y",strtotime($operacion->fecha_f_toquelar_ident)),
+            // 'fecha3' =>  date("d-m-Y",strtotime($operacion->fecha_i_limpiar_reb)),
+            // 'fecha4' =>  date("d-m-Y",strtotime($operacion->fecha_f_limpiar_reb)),
+            // 'fecha5' =>  date("d-m-Y",strtotime($operacion->fecha_i_prot_tub)),
+            // 'fecha6' =>  date("d-m-Y",strtotime($operacion->fecha_f_prot_tub)),
+            // 'fecha7' =>  date("d-m-Y",strtotime($operacion->fecha_i_alm)),
+            // 'fecha8' =>  date("d-m-Y",strtotime($operacion->fecha_f_alm)),
+            // 'fecha9' =>  date("d-m-Y",strtotime($operacion->fecha_i_ranura)),
+            // 'fecha10' =>  date("d-m-Y",strtotime($operacion->fecha_f_ranura)),
         ];
 
         $pdf = PDF::loadView('PlanillaOrdenProduccion',$data)->output();

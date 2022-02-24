@@ -13,7 +13,6 @@
                             <th>Telefono</th>
                             <th>Rol</th>
                             <th colspan="2"></th>     
-
                         </tr>
                     </thead>
                     <tbody>
@@ -24,7 +23,7 @@
                                 <td>{{$usuario->telefono}}</td>
                                 <td>{{$usuario->roles->first()->name}}</td>
                                 <td width="10px">
-                                    @livewire('admin.create-usuarios',['accion' => 'edit', 'usuario' => $usuario->id],key($usuario->id))
+                                    @livewire('admin.create-usuarios',['accion' => 'edit', 'usuario' => $usuario],key($usuario->id))
                                 </td>
                                 <td width="10px">
                                     <button

@@ -28,6 +28,7 @@ class CreateOrdenProduccionsTable extends Migration
             $table->string('densidad_rpp');
             $table->string('maq');
             $table->string('long');
+            $table->string('estado');
             $table->string('observaciones');
             $table->unsignedBigInteger('suplidor_id');
             $table->foreign('suplidor_id')->references('id')->on('suplidors');
